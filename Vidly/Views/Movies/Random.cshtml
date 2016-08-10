@@ -1,0 +1,33 @@
+﻿@*@using Vidly.Models*@
+@model Vidly.ViewModels.RandomMovieViewModel
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*first h2 is using the view data to pass to the view the second also requires the using statement and is ugly, 
+    the second is using movie variable passed as the view arg*@
+@*<h2>@( ((Movie)ViewData["Movie"]).Name)</h2>*@
+@*this is the preferred approach for many reasons*@
+
+@*an example of writing c# code in Razor*@
+@{ 
+    var className = Model.Customers.Count > 0 ? "popular" : null;
+}
+
+<h2 class="@className">@Model.Movie.Name</h2>
+
+@if(Model.Customers.Count == 0)
+{
+    <text>No one has rented this movie before.</text>
+}
+else
+{
+    <ul>
+        @foreach (var customers in Model.Customers)
+        {
+            <li>@customers.Name</li>
+        }
+    </ul>
+}
+
