@@ -203,6 +203,14 @@
     <Compile Include="Migrations\201608110709328_UpdateMembershipTable.Designer.cs">
       <DependentUpon>201608110709328_UpdateMembershipTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608111923108_AddNullableBirthDate.cs" />
+    <Compile Include="Migrations\201608111923108_AddNullableBirthDate.Designer.cs">
+      <DependentUpon>201608111923108_AddNullableBirthDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608111936587_FormatBirthday.cs" />
+    <Compile Include="Migrations\201608111936587_FormatBirthday.Designer.cs">
+      <DependentUpon>201608111936587_FormatBirthday.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -310,6 +318,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608110709328_UpdateMembershipTable.resx">
       <DependentUpon>201608110709328_UpdateMembershipTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608111923108_AddNullableBirthDate.resx">
+      <DependentUpon>201608111923108_AddNullableBirthDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608111936587_FormatBirthday.resx">
+      <DependentUpon>201608111936587_FormatBirthday.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
