@@ -31,6 +31,40 @@ namespace Vidly.Controllers
             };
         }
 
+        public ActionResult New()
+        {
+            var membershipType = _context.MembershipType.ToList();
+
+            var viewModel = new CustomerFormViewModel
+            {
+                MembershipTypes = membershipType
+            };
+
+            return View("CustomerForm", viewModel);
+        }
+
+        //this method posts the form to server
+        [HttpPost]
+        public ActionResult Save(Customer customer)
+        {
+            if(customer.Id == 0)
+            {
+                _context.Customer.Add(customer);
+            }
+            else
+            {
+                var customerInDb = _context.Customer.Single(c => c.Id == customer.Id);
+
+                customerInDb.Name = customer.Name;
+                customerInDb.BirthDate = customer.BirthDate;
+                customerInDb.MembershipTypeId = customer.MembershipTypeId;
+                customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Customers");
+        }
+
         // GET: Customers
         public ActionResult Index()
         {
@@ -59,6 +93,25 @@ namespace Vidly.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var customer = _context.Customer.SingleOrDefault(c => c.Id == id);
+            
+            if(customer == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = _context.MembershipType.ToList()
+            };
+
+            //mvc will look for an edit action unless overriden with new
+            return View("CustomerForm", viewModel);
         }
     }
 }

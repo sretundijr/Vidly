@@ -11,12 +11,17 @@ namespace Vidly.Models
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
+
         public bool IsSubscribedToNewsLetter { get; set; }
+
         public MembershipType MembershipType { get; set; }
 
         [Column(TypeName="Date")]
+        [Display(Name = "Date of Birth")]
         public DateTime? BirthDate { get; set; }
+
         //entity will see this as a foriegn key
+        [Display(Name = "Membership Type")]
         public byte MembershipTypeId { get; set; }
     }
 }
