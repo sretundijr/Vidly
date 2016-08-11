@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
@@ -7,6 +9,18 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
+
+        private ApplicationDbContext _context;
+
+        public CustomersController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
 
         private List<Customer> GetCustomers()
         {
@@ -20,11 +34,11 @@ namespace Vidly.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-
+            var customers = _context.Customer.Include(c => c.MembershipType).ToList();
 
             var viewModel = new CustomersViewModel
             {
-                Customers = GetCustomers()
+                Customers = customers
             };
 
             return View(viewModel);
@@ -32,22 +46,19 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int id)
         {
-            
+            var customer = _context.Customer.SingleOrDefault(c => c.Id == id);
 
-            foreach (var customer in GetCustomers())
+            if(customer == null)
             {
-                if (customer.Id == id)
-                {
-                    var selectedCustomer = new CustomersViewModel
-                    {
-                        SelectedCustomer = customer
-                    };
-
-                    return View(selectedCustomer);
-                }
+                return HttpNotFound();
             }
 
-            return RedirectToAction("Index");
+            var viewModel = new CustomersViewModel
+            {
+                SelectedCustomer = customer
+            };
+
+            return View(viewModel);
         }
     }
 }
