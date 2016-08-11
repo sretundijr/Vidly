@@ -66,11 +66,8 @@ namespace Vidly.Controllers
 
         public ActionResult Movies()
         {
-            var moviesList = new List<Movie>
-            {
-                new Movie { Name = "Shrek" },
-                new Movie { Name = "Terminator" }
-            };
+            var moviesList = GetMovies();
+            
 
             var listOfMovies = new MoviesViewModel
             {
@@ -78,6 +75,15 @@ namespace Vidly.Controllers
             };
 
             return View(listOfMovies);
+        }
+
+        private List<Movie> GetMovies()
+        {
+            return new List<Movie>
+            {
+                new Movie { Name = "Shrek" },
+                new Movie { Name = "Terminator" }
+            };
         }
     }
 }

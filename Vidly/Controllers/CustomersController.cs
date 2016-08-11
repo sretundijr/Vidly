@@ -7,20 +7,24 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        List<Customer> customers = new List<Customer>
+
+        private List<Customer> GetCustomers()
+        {
+            return new List<Customer>
             {
                 new Customer { Id = 1, Name = "Steve" },
                 new Customer { Id = 2, Name = "Christina" }
             };
+        }
 
         // GET: Customers
         public ActionResult Index()
         {
-            
+
 
             var viewModel = new CustomersViewModel
             {
-                Customers = customers
+                Customers = GetCustomers()
             };
 
             return View(viewModel);
@@ -30,7 +34,7 @@ namespace Vidly.Controllers
         {
             
 
-            foreach (var customer in customers)
+            foreach (var customer in GetCustomers())
             {
                 if (customer.Id == id)
                 {
