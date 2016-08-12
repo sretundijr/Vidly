@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -48,10 +49,10 @@ namespace Vidly.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Edit(int id)
-        {
-            return Content("id=" + id);
-        }
+        //public ActionResult Edit(int id)
+        //{
+        //    return Content("id=" + id);
+        //}
 
         //movies
         //public ActionResult Index(int? pageIndex, string sortBy)
@@ -102,10 +103,57 @@ namespace Vidly.Controllers
             return View(movieViewModel);
         }
         
+        public ActionResult New()
+        {
+            var genreList = _context.MovieGenres.ToList();
 
+            var viewModel = new MoviesViewModel
+            {
+                MovieGenre = genreList
+            };
 
+            return View("MovieForm", viewModel);
+        }
 
+        public ActionResult Save(Movie movie)
+        {
+            if(movie.Id == 0)
+            {
+                movie.AddedToInventory = DateTime.Now;
+                _context.Movie.Add(movie);
+            }
+            else
+            {
+                var movieInDb = _context.Movie.Single(m => m.Id == movie.Id);
 
+                movieInDb.Name = movie.Name;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+                movieInDb.MovieGenreId = movie.MovieGenreId;
+                movieInDb.QtyInStock = movie.QtyInStock;
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Movies");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var movie = _context.Movie.SingleOrDefault(m => m.Id == id);
+
+            if(movie == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModel = new MoviesViewModel
+            {
+                Movie = movie,
+                MovieGenre = _context.MovieGenres.ToList()
+            };
+
+            return View("MovieForm", viewModel);
+        }
 
         private List<Movie> GetMovies()
         {
