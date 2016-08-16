@@ -8,5 +8,8 @@
         public byte DiscountRate { get; set; }
         public string Name { get; set; }
 
+        //declared static fields to eliminate magic numbers
+        public static readonly byte unknown = 0;
+        public static readonly byte PayAsYouGo = 1;
     }
 }

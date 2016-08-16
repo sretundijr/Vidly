@@ -8,7 +8,7 @@ namespace Vidly.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter a Valid Customer Name")]
         [StringLength(255)]
         public string Name { get; set; }
 
@@ -16,8 +16,10 @@ namespace Vidly.Models
 
         public MembershipType MembershipType { get; set; }
 
+        //this field is required only if the customer wants to purchase a membership
         [Column(TypeName="Date")]
         [Display(Name = "Date of Birth")]
+        [MustBe18ForMembership]
         public DateTime? BirthDate { get; set; }
 
         //entity will see this as a foriegn key

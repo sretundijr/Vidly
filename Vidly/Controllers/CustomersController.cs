@@ -37,6 +37,8 @@ namespace Vidly.Controllers
 
             var viewModel = new CustomerFormViewModel
             {
+                //new customer created to eliminate the id validation error
+                Customer = new Customer(),
                 MembershipTypes = membershipType
             };
 
@@ -45,8 +47,21 @@ namespace Vidly.Controllers
 
         //this method posts the form to server
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
+            //used with validation
+            if(!ModelState.IsValid)
+            {
+                var viewModel = new CustomerFormViewModel
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipType.ToList()
+                };
+
+                return View("CustomerForm", viewModel);
+            }
+
             if(customer.Id == 0)
             {
                 _context.Customer.Add(customer);
