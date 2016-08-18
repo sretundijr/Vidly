@@ -30,3 +30,7 @@ textarea {
 .input-validation-error{
     border: 2px solid red;
 }
+
+.btn-new-movie{
+    margin-bottom: 15px;
+}

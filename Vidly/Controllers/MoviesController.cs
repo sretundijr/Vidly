@@ -79,16 +79,9 @@ namespace Vidly.Controllers
             return Content(year + "/" + month);
         }
 
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            var movies = _context.Movie.Include(g => g.Genre).ToList();
-
-            var viewModel = new MoviesViewModel
-            {
-                MoviesList = movies
-            };
-              
-            return View(viewModel);
+            return View();
         }
 
         public ActionResult Details(int id)
