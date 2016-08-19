@@ -23,31 +23,31 @@ namespace Vidly.Controllers
         }
 
         // GET: Movies/Random
-        public ActionResult Random()
-        {
-            //make a movie object
-            var movie = new Movie() { Name = "Shrek!" };
+        //public ActionResult Random()
+        //{
+        //    //make a movie object
+        //    var movie = new Movie() { Name = "Shrek!" };
 
-            //make a customer object
-            var customers = new List<Customer>
-            {
-                new Customer { Name = "Customer 1" },
-                new Customer { Name = "Customer 2" }
-            };
+        //    //make a customer object
+        //    var customers = new List<Customer>
+        //    {
+        //        new Customer { Name = "Customer 1" },
+        //        new Customer { Name = "Customer 2" }
+        //    };
 
-            //pass both to the view model prop
-            var viewModel = new RandomMovieViewModel
-            {
-                Movie = movie,
-                Customers = customers
-            };
+        //    //pass both to the view model prop
+        //    var viewModel = new RandomMovieViewModel
+        //    {
+        //        Movie = movie,
+        //        Customers = customers
+        //    };
 
-            //movie can be passed as parameter to the view or using the ViewData, this is not a good approach
-            //ViewData["Movie"] = movie;
+        //    //movie can be passed as parameter to the view or using the ViewData, this is not a good approach
+        //    //ViewData["Movie"] = movie;
 
-            //return the view, and change the view html to using the view model
-            return View(viewModel);
-        }
+        //    //return the view, and change the view html to using the view model
+        //    return View(viewModel);
+        //}
 
         //public ActionResult Edit(int id)
         //{
@@ -71,17 +71,24 @@ namespace Vidly.Controllers
         //}
 
         //attribute for custom route and setup constraints for parameter
-        [Route("movies/released/{year}/{month:regex(\\d{2}):range(1, 12)}")]
-        public ActionResult ByReleaseYear(int year, int month)
-        {
+        //[Route("movies/released/{year}/{month:regex(\\d{2}):range(1, 12)}")]
+        //public ActionResult ByReleaseYear(int year, int month)
+        //{
 
 
-            return Content(year + "/" + month);
-        }
+        //    return Content(year + "/" + month);
+        //}
 
         public ViewResult Index()
         {
-            return View();
+            if(User.IsInRole(RoleName.CanManageMovies))
+            {
+                return View("List");
+            }
+            else
+            {
+                return View("ReadOnlyList");
+            }
         }
 
         public ActionResult Details(int id)
@@ -93,6 +100,7 @@ namespace Vidly.Controllers
             return View(movieViewModel);
         }
         
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult New()
         {
             var genreList = _context.MovieGenres.ToList();
